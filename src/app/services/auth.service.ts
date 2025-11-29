@@ -22,6 +22,10 @@ export class AuthService {
       );
   }
 
+  register(registerData: any) {
+    return this.http.post(`${this.apiUrl}/register`, registerData);
+  }
+
   logout() {
     localStorage.clear();
     this.router.navigate(['/login']);

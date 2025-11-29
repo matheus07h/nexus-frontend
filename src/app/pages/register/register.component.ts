@@ -9,7 +9,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -19,37 +19,37 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     NzCardModule,
     RouterLink,
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css',
 })
-export class LoginComponent {
+export class RegisterComponent {
   fb = inject(FormBuilder);
   auth = inject(AuthService);
   router = inject(Router);
   msg = inject(NzMessageService);
   loading = false;
 
-  loginForm = this.fb.group({
+  registerForm = this.fb.group({
+    username: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
-    username: ['', [Validators.required]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   submitForm() {
-    if (this.loginForm.valid) {
+    if (this.registerForm.valid) {
       this.loading = true;
-      this.auth.login(this.loginForm.value).subscribe({
+      this.auth.register(this.registerForm.value).subscribe({
         next: () => {
-          this.msg.success('Login realizado!');
-          this.router.navigate(['/tasks']);
+          this.msg.success('Conta criada com sucesso!');
+          this.router.navigate(['/login']);
         },
-        error: () => {
-          this.msg.error('Credenciais inválidas');
+        error: (err) => {
+          this.msg.error(err.error?.message || 'Erro ao criar conta');
           this.loading = false;
         },
       });
     } else {
-      Object.values(this.loginForm.controls).forEach((control) => {
+      Object.values(this.registerForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });

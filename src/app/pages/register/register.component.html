@@ -1,8 +1,10 @@
-<div class="login-container">
-  <nz-card style="width: 400px" nzTitle="Fazer Login">
-    <form nz-form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+<div class="register-container">
+  <nz-card style="width: 400px" nzTitle="Criar Conta">
+    <form nz-form [formGroup]="registerForm" (ngSubmit)="submitForm()">
       <nz-form-item>
-        <nz-form-control nzErrorTip="Por favor insira seu usuário!">
+        <nz-form-control
+          nzErrorTip="Por favor insira um usuário válido (mínimo 3 caracteres)!"
+        >
           <input nz-input formControlName="username" placeholder="Usuário" />
         </nz-form-control>
       </nz-form-item>
@@ -17,7 +19,9 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control nzErrorTip="Por favor insira sua senha!">
+        <nz-form-control
+          nzErrorTip="Por favor insira uma senha válida (mínimo 6 caracteres)!"
+        >
           <input
             nz-input
             type="password"
@@ -27,10 +31,10 @@
         </nz-form-control>
       </nz-form-item>
       <button nz-button nzType="primary" [nzBlock]="true" [nzLoading]="loading">
-        Entrar
+        Criar Conta
       </button>
       <div style="margin-top: 16px; text-align: center">
-        <a routerLink="/register">Não possui uma conta? Crie aqui</a>
+        <a routerLink="/login">Já possui uma conta? Faça login</a>
       </div>
     </form>
   </nz-card>
