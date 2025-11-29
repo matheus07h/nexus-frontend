@@ -1,1 +1,34 @@
-<p>login works!</p>
+<div class="login-container">
+  <nz-card style="width: 400px" nzTitle="Nexus Task Manager">
+    <form nz-form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Por favor insira seu usuário!">
+          <input nz-input formControlName="username" placeholder="Usuário" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Por favor insira um e-mail válido!">
+          <input
+            nz-input
+            type="email"
+            formControlName="email"
+            placeholder="E-mail"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Por favor insira sua senha!">
+          <input
+            nz-input
+            type="password"
+            formControlName="password"
+            placeholder="Senha"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <button nz-button nzType="primary" [nzBlock]="true" [nzLoading]="loading">
+        Entrar
+      </button>
+    </form>
+  </nz-card>
+</div>

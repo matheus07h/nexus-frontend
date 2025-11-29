@@ -1,1 +1,127 @@
-<p>task-list works!</p>
+<div style="padding: 24px">
+  <div
+    style="
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    "
+  >
+    <h2>Minhas Tarefas</h2>
+    <button nz-button nzType="primary" (click)="openModal()">
+      <span nz-icon nzType="plus"></span> Nova Tarefa
+    </button>
+  </div>
+
+  <nz-table #basicTable [nzData]="tasks" [nzLoading]="loading">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Status</th>
+        <th>Vencimento</th>
+        <th *ngIf="isAdmin">Dono</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>
+          <strong>{{ data.title }}</strong>
+          <div style="color: #888; font-size: 12px">
+            {{ data.description }}
+          </div>
+        </td>
+        <td>
+          <nz-tag [nzColor]="getStatusColor(data.status)">{{
+            data.status
+          }}</nz-tag>
+        </td>
+        <td>{{ data.dueDate | date : "dd/MM/yyyy" }}</td>
+        <td *ngIf="isAdmin">{{ data.ownerUsername }}</td>
+        <td>
+          <a (click)="openEdit(data)" style="margin-right: 10px">Editar</a>
+          <a
+            nz-popconfirm
+            nzPopconfirmTitle="Tem certeza?"
+            (nzOnConfirm)="deleteTask(data.id)"
+            nzDanger
+            >Excluir</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <nz-modal
+    [(nzVisible)]="isVisible"
+    [nzTitle]="isEditMode ? 'Editar Tarefa' : 'Nova Tarefa'"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+    [nzOkLoading]="isConfirmLoading"
+  >
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="taskForm" nzLayout="vertical">
+        <nz-form-item>
+          <nz-form-label>Título</nz-form-label>
+          <nz-form-control nzErrorTip="Título é obrigatório">
+            <input
+              nz-input
+              formControlName="title"
+              placeholder="Ex: Relatório mensal"
+            />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label>Descrição</nz-form-label>
+          <nz-form-control>
+            <textarea
+              nz-input
+              formControlName="description"
+              rows="3"
+            ></textarea>
+          </nz-form-control>
+        </nz-form-item>
+
+        <div style="display: flex; gap: 16px">
+          <nz-form-item style="flex: 1">
+            <nz-form-label>Vencimento</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker
+                formControlName="dueDate"
+                style="width: 100%"
+              ></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item style="flex: 1">
+            <nz-form-label>Status</nz-form-label>
+            <nz-form-control>
+              <nz-select formControlName="status">
+                <nz-option nzValue="TODO" nzLabel="A Fazer"></nz-option>
+                <nz-option
+                  nzValue="IN_PROGRESS"
+                  nzLabel="Em Progresso"
+                ></nz-option>
+                <nz-option nzValue="DONE" nzLabel="Feito"></nz-option>
+                <nz-option nzValue="BLOCKED" nzLabel="Bloqueado"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <nz-form-item *ngIf="isAdmin && !isEditMode">
+          <nz-form-label>ID do Usuário (Opcional - Admin)</nz-form-label>
+          <nz-form-control nzExtra="Deixe vazio para atribuir a si mesmo">
+            <input
+              nz-input
+              type="number"
+              formControlName="ownerId"
+              placeholder="ID do usuário"
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+  </nz-modal>
+</div>

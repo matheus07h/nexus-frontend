@@ -18,43 +18,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     NzButtonModule,
     NzCardModule,
   ],
-  template: `
-    <div
-      style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5;"
-    >
-      <nz-card style="width: 400px;" nzTitle="Nexus Task Manager">
-        <form nz-form [formGroup]="loginForm" (ngSubmit)="submitForm()">
-          <nz-form-item>
-            <nz-form-control nzErrorTip="Por favor insira seu usuário!">
-              <input
-                nz-input
-                formControlName="username"
-                placeholder="Usuário"
-              />
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item>
-            <nz-form-control nzErrorTip="Por favor insira sua senha!">
-              <input
-                nz-input
-                type="password"
-                formControlName="password"
-                placeholder="Senha"
-              />
-            </nz-form-control>
-          </nz-form-item>
-          <button
-            nz-button
-            nzType="primary"
-            [nzBlock]="true"
-            [nzLoading]="loading"
-          >
-            Entrar
-          </button>
-        </form>
-      </nz-card>
-    </div>
-  `,
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   fb = inject(FormBuilder);
@@ -64,6 +29,7 @@ export class LoginComponent {
   loading = false;
 
   loginForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
     username: ['', [Validators.required]],
     password: ['', [Validators.required]],
   });
